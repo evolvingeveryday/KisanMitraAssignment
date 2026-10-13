@@ -1,0 +1,203 @@
+========================================================================
+CS543 ASSIGNMENT 6 - TRANSCRIPT.TXT (Kisan Mitra Orders Service)
+Honest Responses: Status Codes, RFC 7807 Problem Details & Validation
+========================================================================
+
+D1. SUCCESS TRANSCRIPT (201 Created + Location + JSON Body):
+HTTP/1.1 201 Created
+X-Powered-By: Express
+X-Content-Type-Options: nosniff
+Strict-Transport-Security: max-age=31536000; includeSubDomains
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Methods: GET, POST, PATCH, DELETE, OPTIONS
+Access-Control-Allow-Headers: Content-Type, Authorization, Idempotency-Key, If-Match, If-None-Match, X-HTTP-Method-Override, Accept
+Access-Control-Expose-Headers: Location, ETag, X-RateLimit-Limit, X-RateLimit-Remaining, Retry-After
+X-RateLimit-Limit: 50
+X-RateLimit-Remaining: 49
+Location: /orders/104
+ETag: "10a018d8ad3f140b"
+Content-Type: application/json; charset=utf-8
+Content-Length: 294
+Date: Tue, 13 Oct 2026 17:00:35 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+{"id":"104","buyerId":"BUYER-01","items":[{"productId":"PROD-MUSTARD-01","quantity":20,"pricePerKg":75,"itemTotal":"1500.00"}],"totalAmount":1500,"deliveryAddress":"Kisan Mandi Warehouse 2, Anand","status":"pending","createdAt":"2026-10-13T17:00:35.656Z","updatedAt":"2026-10-13T17:00:35.656Z"}
+
+
+D2. FAILURE TRANSCRIPTS (Problem Details RFC 7807 Bodies):
+
+2a. Field-level validation failure (422 with multiple bad fields at once):
+HTTP/1.1 422 Unprocessable Entity
+X-Powered-By: Express
+X-Content-Type-Options: nosniff
+Strict-Transport-Security: max-age=31536000; includeSubDomains
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Methods: GET, POST, PATCH, DELETE, OPTIONS
+Access-Control-Allow-Headers: Content-Type, Authorization, Idempotency-Key, If-Match, If-None-Match, X-HTTP-Method-Override, Accept
+Access-Control-Expose-Headers: Location, ETag, X-RateLimit-Limit, X-RateLimit-Remaining, Retry-After
+X-RateLimit-Limit: 50
+X-RateLimit-Remaining: 48
+Content-Type: application/problem+json; charset=utf-8
+Content-Length: 448
+ETag: W/"1c0-4UPEaf8R/OYUW81nMvQBgErBXw0"
+Date: Tue, 13 Oct 2026 17:00:35 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+{"type":"https://kisanmitra.in/errors/validation-error","title":"Validation Failed","status":422,"detail":"The submitted order payload failed field-level schema validation.","errors":[{"field":"deliveryAddress","message":"Delivery address is required and cannot be empty."},{"field":"items[0].productId","message":"Product ID is required."},{"field":"items[0].quantity","message":"Quantity must be a positive integer greater than or equal to 1."}]}
+
+
+2b. Empty items array / empty cart (422 Unprocessable Entity):
+HTTP/1.1 422 Unprocessable Entity
+X-Powered-By: Express
+X-Content-Type-Options: nosniff
+Strict-Transport-Security: max-age=31536000; includeSubDomains
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Methods: GET, POST, PATCH, DELETE, OPTIONS
+Access-Control-Allow-Headers: Content-Type, Authorization, Idempotency-Key, If-Match, If-None-Match, X-HTTP-Method-Override, Accept
+Access-Control-Expose-Headers: Location, ETag, X-RateLimit-Limit, X-RateLimit-Remaining, Retry-After
+X-RateLimit-Limit: 50
+X-RateLimit-Remaining: 47
+Content-Type: application/problem+json; charset=utf-8
+Content-Length: 283
+ETag: W/"11b-L73YASDBZAy0wPYUBaPUrwciz00"
+Date: Tue, 13 Oct 2026 17:00:35 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+{"type":"https://kisanmitra.in/errors/validation-error","title":"Validation Failed","status":422,"detail":"The submitted order payload failed field-level schema validation.","errors":[{"field":"items","message":"Order items cannot be empty; at least one produce item is required."}]}
+
+
+2c. Item unavailable / out of stock (409 Conflict):
+HTTP/1.1 409 Conflict
+X-Powered-By: Express
+X-Content-Type-Options: nosniff
+Strict-Transport-Security: max-age=31536000; includeSubDomains
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Methods: GET, POST, PATCH, DELETE, OPTIONS
+Access-Control-Allow-Headers: Content-Type, Authorization, Idempotency-Key, If-Match, If-None-Match, X-HTTP-Method-Override, Accept
+Access-Control-Expose-Headers: Location, ETag, X-RateLimit-Limit, X-RateLimit-Remaining, Retry-After
+X-RateLimit-Limit: 50
+X-RateLimit-Remaining: 46
+Content-Type: application/problem+json; charset=utf-8
+Content-Length: 179
+ETag: W/"b3-VzatLwerxLshFWVGVKv6aG7m5Jo"
+Date: Tue, 13 Oct 2026 17:00:35 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+{"type":"https://kisanmitra.in/errors/item-unavailable","title":"Produce Unavailable","status":409,"detail":"One or more selected farm items are out of stock with local farmers."}
+
+
+2d. Unknown resource ID (404 Not Found):
+HTTP/1.1 404 Not Found
+X-Powered-By: Express
+X-Content-Type-Options: nosniff
+Strict-Transport-Security: max-age=31536000; includeSubDomains
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Methods: GET, POST, PATCH, DELETE, OPTIONS
+Access-Control-Allow-Headers: Content-Type, Authorization, Idempotency-Key, If-Match, If-None-Match, X-HTTP-Method-Override, Accept
+Access-Control-Expose-Headers: Location, ETag, X-RateLimit-Limit, X-RateLimit-Remaining, Retry-After
+X-RateLimit-Limit: 50
+X-RateLimit-Remaining: 49
+Content-Type: application/problem+json; charset=utf-8
+Content-Length: 140
+ETag: W/"8c-lKio2Oyo+QSfiI6LJHjMccJ4Iw4"
+Date: Tue, 13 Oct 2026 17:00:35 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+{"type":"https://kisanmitra.in/errors/order-not-found","title":"Order Not Found","status":404,"detail":"No order found matching ID: 999999"}
+
+
+2e. Illegal state transition / cancel shipped order (409 Conflict):
+HTTP/1.1 409 Conflict
+X-Powered-By: Express
+X-Content-Type-Options: nosniff
+Strict-Transport-Security: max-age=31536000; includeSubDomains
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Methods: GET, POST, PATCH, DELETE, OPTIONS
+Access-Control-Allow-Headers: Content-Type, Authorization, Idempotency-Key, If-Match, If-None-Match, X-HTTP-Method-Override, Accept
+Access-Control-Expose-Headers: Location, ETag, X-RateLimit-Limit, X-RateLimit-Remaining, Retry-After
+X-RateLimit-Limit: 50
+X-RateLimit-Remaining: 44
+Content-Type: application/problem+json; charset=utf-8
+Content-Length: 188
+ETag: W/"bc-BUxmEaRNywpRpKSmrFtOUXOWbzQ"
+Date: Tue, 13 Oct 2026 17:00:36 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+{"type":"https://kisanmitra.in/errors/illegal-transition","title":"Cancellation Refused","status":409,"detail":"Order cannot be cancelled because it has already reached 'shipped' status."}
+
+
+2f. Rate limit exceeded (429 Too Many Requests + Retry-After):
+HTTP/1.1 429 Too Many Requests
+X-Powered-By: Express
+X-Content-Type-Options: nosniff
+Strict-Transport-Security: max-age=31536000; includeSubDomains
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Methods: GET, POST, PATCH, DELETE, OPTIONS
+Access-Control-Allow-Headers: Content-Type, Authorization, Idempotency-Key, If-Match, If-None-Match, X-HTTP-Method-Override, Accept
+Access-Control-Expose-Headers: Location, ETag, X-RateLimit-Limit, X-RateLimit-Remaining, Retry-After
+X-RateLimit-Limit: 50
+X-RateLimit-Remaining: 0
+Retry-After: 60
+Content-Type: application/problem+json; charset=utf-8
+Content-Length: 182
+ETag: W/"b6-3QJicL073UspNO0+eR+xJcYojgM"
+Date: Tue, 13 Oct 2026 17:00:36 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+{"type":"https://kisanmitra.in/errors/rate-limit-exceeded","title":"Too Many Requests","status":429,"detail":"Per-client rate limit of 50 requests/minute exceeded. Please back off."}
+
+
+D3. CONTENT NEGOTIATION CHECK:
+
+3a. Accept: application/xml (Returns XML format):
+HTTP/1.1 200 OK
+X-Powered-By: Express
+X-Content-Type-Options: nosniff
+Strict-Transport-Security: max-age=31536000; includeSubDomains
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Methods: GET, POST, PATCH, DELETE, OPTIONS
+Access-Control-Allow-Headers: Content-Type, Authorization, Idempotency-Key, If-Match, If-None-Match, X-HTTP-Method-Override, Accept
+Access-Control-Expose-Headers: Location, ETag, X-RateLimit-Limit, X-RateLimit-Remaining, Retry-After
+X-RateLimit-Limit: 50
+X-RateLimit-Remaining: 48
+ETag: "28c674898bd4b4e0"
+Cache-Control: public, max-age=60, must-revalidate
+Content-Type: application/xml; charset=utf-8
+Content-Length: 453
+Date: Tue, 13 Oct 2026 17:00:36 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+<?xml version="1.0" encoding="UTF-8"?>
+<order><id>104</id><buyerId>BUYER-01</buyerId><items><item><productId>PROD-MUSTARD-01</productId><quantity>20</quantity><pricePerKg>75</pricePerKg><itemTotal>1500.00</itemTotal></item></items><totalAmount>1500</totalAmount><deliveryAddress>Kisan Mandi Warehouse 2, Anand</deliveryAddress><status>shipped</status><createdAt>2026-10-13T17:00:35.656Z</createdAt><updatedAt>2026-10-13T17:00:36.010Z</updatedAt></order>
+
+
+3b. Accept: image/png (Returns 406 Not Acceptable):
+HTTP/1.1 406 Not Acceptable
+X-Powered-By: Express
+X-Content-Type-Options: nosniff
+Strict-Transport-Security: max-age=31536000; includeSubDomains
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Methods: GET, POST, PATCH, DELETE, OPTIONS
+Access-Control-Allow-Headers: Content-Type, Authorization, Idempotency-Key, If-Match, If-None-Match, X-HTTP-Method-Override, Accept
+Access-Control-Expose-Headers: Location, ETag, X-RateLimit-Limit, X-RateLimit-Remaining, Retry-After
+X-RateLimit-Limit: 50
+X-RateLimit-Remaining: 47
+Content-Type: application/problem+json; charset=utf-8
+Content-Length: 213
+ETag: W/"d5-oZdjlwoLZK1hr3jahCrntIos0Js"
+Date: Tue, 13 Oct 2026 17:00:36 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+{"type":"https://kisanmitra.in/errors/not-acceptable","title":"Not Acceptable","status":406,"detail":"Unsupported Accept format requested: \"image/png\". Supported formats are: application/json, application/xml."}
+
+
+
