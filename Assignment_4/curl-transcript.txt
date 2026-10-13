@@ -1,0 +1,112 @@
+========================================================================
+CS543 ASSIGNMENT 4 - CURL TRANSCRIPT (Kisan Mitra Orders Service)
+========================================================================
+
+1. CREATE ORDER (201 Created + Location header):
+HTTP/1.1 201 Created
+X-Powered-By: Express
+X-Content-Type-Options: nosniff
+Strict-Transport-Security: max-age=31536000; includeSubDomains
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Methods: GET, POST, PATCH, DELETE, OPTIONS
+Access-Control-Allow-Headers: Content-Type, Authorization, Idempotency-Key, If-Match, If-None-Match, X-HTTP-Method-Override, Accept
+Access-Control-Expose-Headers: Location, ETag, X-RateLimit-Limit, X-RateLimit-Remaining, Retry-After
+X-RateLimit-Limit: 50
+X-RateLimit-Remaining: 49
+Location: /orders/101
+ETag: "f55434de03d9bbb1"
+Content-Type: application/json; charset=utf-8
+Content-Length: 284
+Date: Tue, 13 Oct 2026 16:47:12 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+{"id":"101","buyerId":"BUYER-01","items":[{"productId":"PROD-WHEAT-01","quantity":5,"pricePerKg":35,"itemTotal":"175.00"}],"totalAmount":175,"deliveryAddress":"Anand APMC Mandi, Gujarat","status":"pending","createdAt":"2026-10-13T16:47:12.101Z","updatedAt":"2026-10-13T16:47:12.101Z"}
+
+
+2. IDEMPOTENT REPEAT (same Idempotency-Key returns cached response):
+HTTP/1.1 201 Created
+X-Powered-By: Express
+X-Content-Type-Options: nosniff
+Strict-Transport-Security: max-age=31536000; includeSubDomains
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Methods: GET, POST, PATCH, DELETE, OPTIONS
+Access-Control-Allow-Headers: Content-Type, Authorization, Idempotency-Key, If-Match, If-None-Match, X-HTTP-Method-Override, Accept
+Access-Control-Expose-Headers: Location, ETag, X-RateLimit-Limit, X-RateLimit-Remaining, Retry-After
+X-RateLimit-Limit: 50
+X-RateLimit-Remaining: 48
+Location: /orders/101
+ETag: "f55434de03d9bbb1"
+Content-Type: application/json; charset=utf-8
+Content-Length: 284
+Date: Tue, 13 Oct 2026 16:47:12 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+{"id":"101","buyerId":"BUYER-01","items":[{"productId":"PROD-WHEAT-01","quantity":5,"pricePerKg":35,"itemTotal":"175.00"}],"totalAmount":175,"deliveryAddress":"Anand APMC Mandi, Gujarat","status":"pending","createdAt":"2026-10-13T16:47:12.101Z","updatedAt":"2026-10-13T16:47:12.101Z"}
+
+
+3. MALFORMED BODY REJECTED (400 Bad Request):
+HTTP/1.1 400 Bad Request
+X-Powered-By: Express
+X-Content-Type-Options: nosniff
+Strict-Transport-Security: max-age=31536000; includeSubDomains
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Methods: GET, POST, PATCH, DELETE, OPTIONS
+Access-Control-Allow-Headers: Content-Type, Authorization, Idempotency-Key, If-Match, If-None-Match, X-HTTP-Method-Override, Accept
+Access-Control-Expose-Headers: Location, ETag, X-RateLimit-Limit, X-RateLimit-Remaining, Retry-After
+X-RateLimit-Limit: 50
+X-RateLimit-Remaining: 47
+Content-Type: application/problem+json; charset=utf-8
+Content-Length: 143
+ETag: W/"8f-g8H6iOoCdEFNuFNJWivmhaqVGdg"
+Date: Tue, 13 Oct 2026 16:47:12 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+{"type":"https://kisanmitra.in/errors/bad-request","title":"Malformed JSON","status":400,"detail":"Request body contains invalid JSON syntax."}
+
+
+4. MISSING RESOURCE (404 Not Found):
+HTTP/1.1 404 Not Found
+X-Powered-By: Express
+X-Content-Type-Options: nosniff
+Strict-Transport-Security: max-age=31536000; includeSubDomains
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Methods: GET, POST, PATCH, DELETE, OPTIONS
+Access-Control-Allow-Headers: Content-Type, Authorization, Idempotency-Key, If-Match, If-None-Match, X-HTTP-Method-Override, Accept
+Access-Control-Expose-Headers: Location, ETag, X-RateLimit-Limit, X-RateLimit-Remaining, Retry-After
+X-RateLimit-Limit: 50
+X-RateLimit-Remaining: 48
+Content-Type: application/problem+json; charset=utf-8
+Content-Length: 139
+ETag: W/"8b-MiLL4X/fHFrcXzDGKa/IhvjD+uw"
+Date: Tue, 13 Oct 2026 16:47:12 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+{"type":"https://kisanmitra.in/errors/order-not-found","title":"Order Not Found","status":404,"detail":"No order found matching ID: 99999"}
+
+
+5. STATE CONFLICT / PRODUCE OUT OF STOCK (409 Conflict):
+HTTP/1.1 409 Conflict
+X-Powered-By: Express
+X-Content-Type-Options: nosniff
+Strict-Transport-Security: max-age=31536000; includeSubDomains
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Methods: GET, POST, PATCH, DELETE, OPTIONS
+Access-Control-Allow-Headers: Content-Type, Authorization, Idempotency-Key, If-Match, If-None-Match, X-HTTP-Method-Override, Accept
+Access-Control-Expose-Headers: Location, ETag, X-RateLimit-Limit, X-RateLimit-Remaining, Retry-After
+X-RateLimit-Limit: 50
+X-RateLimit-Remaining: 46
+Content-Type: application/problem+json; charset=utf-8
+Content-Length: 179
+ETag: W/"b3-VzatLwerxLshFWVGVKv6aG7m5Jo"
+Date: Tue, 13 Oct 2026 16:47:12 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+{"type":"https://kisanmitra.in/errors/item-unavailable","title":"Produce Unavailable","status":409,"detail":"One or more selected farm items are out of stock with local farmers."}
+
+
+
