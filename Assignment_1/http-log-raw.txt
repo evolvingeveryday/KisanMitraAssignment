@@ -1,0 +1,187 @@
+
+========== 1 - Get Post 1 ==========
+Command: curl.exe -i https://jsonplaceholder.typicode.com/posts/1
+HTTP/1.1 200 OK
+Date: Sat, 10 Oct 2026 08:33:21 GMT
+Content-Type: application/json; charset=utf-8
+Content-Length: 292
+Connection: keep-alive
+access-control-allow-credentials: true
+Cache-Control: max-age=43200
+etag: W/"124-yiKdLzqO5gfBrJFrcdJ8Yq0LGnU"
+expires: -1
+pragma: no-cache
+vary: Origin, Accept-Encoding
+x-content-type-options: nosniff
+x-powered-by: Express
+x-ratelimit-limit: 3600000
+x-ratelimit-remaining: 3599999
+x-ratelimit-reset: 1790812826
+Accept-Ranges: bytes
+Nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+Age: 23853
+cf-cache-status: HIT
+Report-To: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=8unvtmr5NS36cvIysTaF9DvBZ6MEKc0wdepPBcQM%2BENLwUcySEpD1FUQJwsoiGxvtEbKkISLNEPhYLDg4PfPRnyYRn%2Bhmp1d%2BcI8gSoLBAeQIF2x%2FTueVv3%2FAtTrFh0VdYM4nuY8Dn3NCewlOGs61xSPb6rmAnh65nKL"}]}
+Server: cloudflare
+CF-RAY: a484479b2c35fd08-SIN
+alt-svc: h3=":443"; ma=86400
+
+{
+  "userId": 1,
+  "id": 1,
+  "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
+  "body": "quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto"
+}
+
+
+========== 2 - Get Missing Post (404) ==========
+Command: curl.exe -i https://jsonplaceholder.typicode.com/posts/999999
+HTTP/1.1 404 Not Found
+Date: Sat, 10 Oct 2026 08:33:21 GMT
+Content-Type: application/json; charset=utf-8
+Content-Length: 2
+Connection: keep-alive
+access-control-allow-credentials: true
+Cache-Control: max-age=43200
+etag: W/"2-vyGp6PvFo4RvsFtPoIWeCReyIC8"
+expires: -1
+pragma: no-cache
+vary: Origin, Accept-Encoding
+x-content-type-options: nosniff
+x-powered-by: Express
+x-ratelimit-limit: 3600000
+x-ratelimit-remaining: 3599997
+x-ratelimit-reset: 1791620335
+Nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+Age: 2126
+cf-cache-status: HIT
+Report-To: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=7DmzqdL1o8rg%2BsZHrYFAOw46cOWetPzOk3TDbHfBm41K6iw5O4ypTrydY22gSIBCyPFxayP0ZxBqdMBlqpIwHY0nQZHG4aSQq8VxGsVzZs31CaxL5k%2Fe7t3hfdXQzWm88R4YbQCftKP6kbcVZE%2FPJ7UDyvde1wHxJrmp"}]}
+Server: cloudflare
+CF-RAY: a484479e4ef09f68-SIN
+alt-svc: h3=":443"; ma=86400
+
+{}
+
+
+========== 3 - Get Post 2 ==========
+Command: curl.exe -i https://jsonplaceholder.typicode.com/posts/2
+HTTP/1.1 200 OK
+Date: Sat, 10 Oct 2026 08:33:22 GMT
+Content-Type: application/json; charset=utf-8
+Content-Length: 278
+Connection: keep-alive
+access-control-allow-credentials: true
+Cache-Control: max-age=43200
+etag: W/"116-jnDuMpjju89+9j7e0BqkdFsVRjs"
+expires: -1
+pragma: no-cache
+vary: Origin, Accept-Encoding
+x-content-type-options: nosniff
+x-powered-by: Express
+x-ratelimit-limit: 3600000
+x-ratelimit-remaining: 3599995
+x-ratelimit-reset: 1790812826
+Age: 5293
+Accept-Ranges: bytes
+cf-cache-status: HIT
+Report-To: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=lBd%2BtKU7Wbgf3HZAfOwhQdA4Ltf5n795lxgDumj4Q88du%2FUIk4cxuUYpw6cgaaXHlK5OOu2mrknfHXt9Kir41OSUWlUvmPxGPkCsRPXk95yzm%2BQGz3xQEuS6mjIpTFS6D%2BSVO4I%2FBG4VKwHXnfxdzFVNmwYjnmilj0j1"}]}
+Nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+Server: cloudflare
+CF-RAY: a48447a11f787e2e-SIN
+alt-svc: h3=":443"; ma=86400
+
+{
+  "userId": 1,
+  "id": 2,
+  "title": "qui est esse",
+  "body": "est rerum tempore vitae\nsequi sint nihil reprehenderit dolor beatae ea dolores neque\nfugiat blanditiis voluptate porro vel nihil molestiae ut reiciendis\nqui aperiam non debitis possimus qui neque nisi nulla"
+}
+
+
+========== 4 - Get User 1 ==========
+Command: curl.exe -i https://jsonplaceholder.typicode.com/users/1
+HTTP/1.1 200 OK
+Date: Sat, 10 Oct 2026 08:33:22 GMT
+Content-Type: application/json; charset=utf-8
+Content-Length: 509
+Connection: keep-alive
+access-control-allow-credentials: true
+Cache-Control: max-age=43200
+etag: W/"1fd-+2Y3G3w049iSZtw5t1mzSnunngE"
+expires: -1
+pragma: no-cache
+vary: Origin, Accept-Encoding
+x-content-type-options: nosniff
+x-powered-by: Express
+x-ratelimit-limit: 3600000
+x-ratelimit-remaining: 3599999
+x-ratelimit-reset: 1790812826
+Age: 5394
+Accept-Ranges: bytes
+cf-cache-status: HIT
+Report-To: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=4l2iB7sstZJpVSNaKH%2FNaET1GApJpJsVF%2F%2BnhMLPa19z5TF6ZMUhq8h3VwHV99y0OfBgh8AewSZWdh72Ypa8riqQESt6cjbcinlRh1uehhLIWEM861wV9fD0PUlQvKI%2Blkm84%2F5F5dxmlKgEvQy6rKAWOA5WN8j5LNTs"}]}
+Nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+Server: cloudflare
+CF-RAY: a48447a3eb5d1483-HKG
+alt-svc: h3=":443"; ma=86400
+
+{
+  "id": 1,
+  "name": "Leanne Graham",
+  "username": "Bret",
+  "email": "Sincere@april.biz",
+  "address": {
+    "street": "Kulas Light",
+    "suite": "Apt. 556",
+    "city": "Gwenborough",
+    "zipcode": "92998-3874",
+    "geo": {
+      "lat": "-37.3159",
+      "lng": "81.1496"
+    }
+  },
+  "phone": "1-770-736-8031 x56442",
+  "website": "hildegard.org",
+  "company": {
+    "name": "Romaguera-Crona",
+    "catchPhrase": "Multi-layered client-server neural-net",
+    "bs": "harness real-time e-markets"
+  }
+}
+
+
+========== 5 - Get Comment 1 ==========
+Command: curl.exe -i https://jsonplaceholder.typicode.com/comments/1
+HTTP/1.1 200 OK
+Date: Sat, 10 Oct 2026 08:33:22 GMT
+Content-Type: application/json; charset=utf-8
+Content-Length: 268
+Connection: keep-alive
+access-control-allow-credentials: true
+Cache-Control: max-age=43200
+etag: W/"10c-KJ4I9RM/+33TKdV8CFsIvqsDSP0"
+expires: -1
+pragma: no-cache
+vary: Origin, Accept-Encoding
+x-content-type-options: nosniff
+x-powered-by: Express
+x-ratelimit-limit: 3600000
+x-ratelimit-remaining: 3599994
+x-ratelimit-reset: 1790812826
+Age: 5246
+Accept-Ranges: bytes
+cf-cache-status: HIT
+Report-To: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=o5zZkOsxdq4bJ9wHEReMi4hn0SkeT8OZt46TWE6LS5IHN0d%2BfT6te%2BruJHhCd1zunuky17XqKb8aMqZQmU%2FjAsHTJJudHLXnDcv6X1W4eZiBrrjkEvM%2Ft3orohBvnt%2FwApiSH8fo%2Fkpj3rBBHD0wlzirGoeNqEyHV%2Fq0"}]}
+Nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+Server: cloudflare
+CF-RAY: a48447a5ed9fce41-SIN
+alt-svc: h3=":443"; ma=86400
+
+{
+  "postId": 1,
+  "id": 1,
+  "name": "id labore ex et quam laborum",
+  "email": "Eliseo@gardner.biz",
+  "body": "laudantium enim quasi est quidem magnam voluptate ipsam eos\ntempora quo necessitatibus\ndolor quam autem quasi\nreiciendis et nam sapiente accusantium"
+}
+
