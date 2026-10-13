@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:pay="http://kisanpay.gov.in/ws/payment">
+  <soapenv:Header/>
+  <soapenv:Body>
+    <pay:ProcessPaymentResponse>
+      <pay:referenceNumber>KPAY-REF-9928172635</pay:referenceNumber>
+      <pay:orderId>ORD-5542</pay:orderId>
+      <pay:status>SETTLED</pay:status>
+      <pay:settledAmount>1450.00</pay:settledAmount>
+      <pay:processedAt>2026-10-13T20:30:02Z</pay:processedAt>
+    </pay:ProcessPaymentResponse>
+  </soapenv:Body>
+</soapenv:Envelope>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:pay="http://kisanpay.gov.in/ws/payment">
+  <soapenv:Header>
+    <pay:PartnerCredentials>
+      <pay:merchantId>KM-MERCHANT-8821</pay:merchantId>
+      <pay:apiKey>sec_live_kisan_mitra_99a8b7c6d5e4f3</pay:apiKey>
+      <pay:timestamp>2026-10-13T20:30:00Z</pay:timestamp>
+    </pay:PartnerCredentials>
+  </soapenv:Header>
+  <soapenv:Body>
+    <pay:ProcessPaymentRequest>
+      <pay:transactionId>TXN-KM-20261013-0091</pay:transactionId>
+      <pay:orderId>ORD-5542</pay:orderId>
+      <pay:payerKisanId>BUYER-GUJ-90214</pay:payerKisanId>
+      <pay:amount>1450.00</pay:amount>
+      <pay:currency>INR</pay:currency>
+      <pay:paymentMethod>UPI</pay:paymentMethod>
+    </pay:ProcessPaymentRequest>
+  </soapenv:Body>
+</soapenv:Envelope>

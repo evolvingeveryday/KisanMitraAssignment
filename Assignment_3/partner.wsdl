@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="KisanPayGatewayService"
+    targetNamespace="http://kisanpay.gov.in/ws/payment"
+    xmlns:tns="http://kisanpay.gov.in/ws/payment"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <!-- ========================================== -->
+  <!-- 1. TYPES (XML Schema Definition)           -->
+  <!-- ========================================== -->
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://kisanpay.gov.in/ws/payment" elementFormDefault="qualified">
+      
+      <!-- Security / Auth Header -->
+      <xsd:element name="PartnerCredentials">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="merchantId" type="xsd:string"/>
+            <xsd:element name="apiKey" type="xsd:string"/>
+            <xsd:element name="timestamp" type="xsd:dateTime"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+
+      <!-- Charge Request -->
+      <xsd:element name="ProcessPaymentRequest">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="transactionId" type="xsd:string"/>
+            <xsd:element name="orderId" type="xsd:string"/>
+            <xsd:element name="payerKisanId" type="xsd:string"/>
+            <xsd:element name="amount" type="xsd:decimal"/>
+            <xsd:element name="currency" type="xsd:string" default="INR"/>
+            <xsd:element name="paymentMethod" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+
+      <!-- Charge Response -->
+      <xsd:element name="ProcessPaymentResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="referenceNumber" type="xsd:string"/>
+            <xsd:element name="orderId" type="xsd:string"/>
+            <xsd:element name="status" type="xsd:string"/>
+            <xsd:element name="settledAmount" type="xsd:decimal"/>
+            <xsd:element name="processedAt" type="xsd:dateTime"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+
+      <!-- Payment Fault Detail -->
+      <xsd:element name="PaymentFaultDetail">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="errorCode" type="xsd:string"/>
+            <xsd:element name="reason" type="xsd:string"/>
+            <xsd:element name="declinedAt" type="xsd:dateTime"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+
+    </xsd:schema>
+  </wsdl:types>
+
+  <!-- ========================================== -->
+  <!-- 2. MESSAGES                                -->
+  <!-- ========================================== -->
+  <wsdl:message name="PartnerHeaderMessage">
+    <wsdl:part name="header" element="tns:PartnerCredentials"/>
+  </wsdl:message>
+
+  <wsdl:message name="ProcessPaymentRequestMessage">
+    <wsdl:part name="parameters" element="tns:ProcessPaymentRequest"/>
+  </wsdl:message>
+
+  <wsdl:message name="ProcessPaymentResponseMessage">
+    <wsdl:part name="parameters" element="tns:ProcessPaymentResponse"/>
+  </wsdl:message>
+
+  <wsdl:message name="PaymentFaultMessage">
+    <wsdl:part name="fault" element="tns:PaymentFaultDetail"/>
+  </wsdl:message>
+
+  <!-- ========================================== -->
+  <!-- 3. PORT TYPE (Abstract Interface)          -->
+  <!-- ========================================== -->
+  <wsdl:portType name="KisanPayPortType">
+    <wsdl:operation name="processPayment">
+      <wsdl:input message="tns:ProcessPaymentRequestMessage"/>
+      <wsdl:output message="tns:ProcessPaymentResponseMessage"/>
+      <wsdl:fault name="PaymentFault" message="tns:PaymentFaultMessage"/>
+    </wsdl:operation>
+  </wsdl:portType>
+
+  <!-- ========================================== -->
+  <!-- 4. BINDING (SOAP 1.1 over HTTP)            -->
+  <!-- ========================================== -->
+  <wsdl:binding name="KisanPaySoapBinding" type="tns:KisanPayPortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    
+    <wsdl:operation name="processPayment">
+      <soap:operation soapAction="http://kisanpay.gov.in/ws/payment/processPayment" style="document"/>
+      <wsdl:input>
+        <soap:header message="tns:PartnerHeaderMessage" part="header" use="literal"/>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="PaymentFault">
+        <soap:fault name="PaymentFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+
+  <!-- ========================================== -->
+  <!-- 5 & 6. SERVICE AND PORT                    -->
+  <!-- ========================================== -->
+  <wsdl:service name="KisanPayGatewayService">
+    <wsdl:documentation>Official Rural Banking &amp; Agricultural Direct Benefit Payment Gateway</wsdl:documentation>
+    <wsdl:port name="KisanPayPort" binding="tns:KisanPaySoapBinding">
+      <soap:address location="https://api.kisanpay.gov.in/ws/v1/gateway"/>
+    </wsdl:port>
+  </wsdl:service>
+
+</wsdl:definitions>

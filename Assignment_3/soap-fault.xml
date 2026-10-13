@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:pay="http://kisanpay.gov.in/ws/payment">
+  <soapenv:Body>
+    <soapenv:Fault>
+      <faultcode>soapenv:Client.PaymentDeclined</faultcode>
+      <faultstring>Agricultural bank transaction declined: insufficient wallet balance</faultstring>
+      <detail>
+        <pay:PaymentFaultDetail>
+          <pay:errorCode>KPAY_ERR_INSUFFICIENT_FUNDS</pay:errorCode>
+          <pay:reason>Buyer account balance is lower than the transaction amount</pay:reason>
+          <pay:declinedAt>2026-10-13T20:30:01Z</pay:declinedAt>
+        </pay:PaymentFaultDetail>
+      </detail>
+    </soapenv:Fault>
+  </soapenv:Body>
+</soapenv:Envelope>
