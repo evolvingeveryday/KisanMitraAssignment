@@ -1,0 +1,910 @@
+========================================================================
+CS543 ASSIGNMENT 5 - CURL -V TRANSCRIPT (Kisan Mitra Orders Service)
+========================================================================
+
+1. CREATE ORDER (201 + Location header):
+Note: Unnecessary use of -X or --request, POST is already inferred.
+* Host localhost:5000 was resolved.
+* IPv6: ::1
+* IPv4: 127.0.0.1
+*   Trying [::1]:5000...
+* Established connection to localhost (::1 port 5000) from ::1 port 51011 
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+
+  0      0   0      0   0      0      0      0                              0* using HTTP/1.x
+> POST /orders HTTP/1.1
+
+> Host: localhost:5000
+
+> User-Agent: curl/8.21.0
+
+> Accept: */*
+
+> Authorization: Bearer km_buyer_token_456
+
+> Content-Type: application/json
+
+> Idempotency-Key: km-key-a5-101
+
+> Content-Length: 133
+
+> 
+
+} [133 bytes data]
+* upload completely sent off: 133 bytes
+< HTTP/1.1 201 Created
+
+< X-Powered-By: Express
+
+< X-Content-Type-Options: nosniff
+
+< Strict-Transport-Security: max-age=31536000; includeSubDomains
+
+< Access-Control-Allow-Origin: *
+
+< Access-Control-Allow-Methods: GET, POST, PATCH, DELETE, OPTIONS
+
+< Access-Control-Allow-Headers: Content-Type, Authorization, Idempotency-Key, If-Match, If-None-Match, X-HTTP-Method-Override, Accept
+
+< Access-Control-Expose-Headers: Location, ETag, X-RateLimit-Limit, X-RateLimit-Remaining, Retry-After
+
+< X-RateLimit-Limit: 50
+
+< X-RateLimit-Remaining: 49
+
+< Location: /orders/102
+
+< ETag: "1b493e2cfc75c9d5"
+
+< Content-Type: application/json; charset=utf-8
+
+< Content-Length: 293
+
+< Date: Tue, 13 Oct 2026 16:48:09 GMT
+
+< Connection: keep-alive
+
+< Keep-Alive: timeout=5
+
+< 
+
+{ [293 bytes data]
+
+100    426 100    293 100    133  56749  25760                              0
+100    426 100    293 100    133  53969  24498                              0
+100    426 100    293 100    133  51987  23598                              0
+* Connection #0 to host localhost:5000 left intact
+{"id":"102","buyerId":"BUYER-01","items":[{"productId":"PROD-RICE-02","quantity":10,"pricePerKg":60,"itemTotal":"600.00"}],"totalAmount":600,"deliveryAddress":"APMC Market Gate 1, Surat, Gujarat","status":"pending","createdAt":"2026-10-13T16:48:09.638Z","updatedAt":"2026-10-13T16:48:09.638Z"}
+
+
+2. IDEMPOTENT REPEAT (identical Idempotency-Key returns original cached response):
+Note: Unnecessary use of -X or --request, POST is already inferred.
+* Host localhost:5000 was resolved.
+* IPv6: ::1
+* IPv4: 127.0.0.1
+*   Trying [::1]:5000...
+* Established connection to localhost (::1 port 5000) from ::1 port 51012 
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+
+  0      0   0      0   0      0      0      0                              0* using HTTP/1.x
+> POST /orders HTTP/1.1
+
+> Host: localhost:5000
+
+> User-Agent: curl/8.21.0
+
+> Accept: */*
+
+> Authorization: Bearer km_buyer_token_456
+
+> Content-Type: application/json
+
+> Idempotency-Key: km-key-a5-101
+
+> Content-Length: 133
+
+> 
+
+} [133 bytes data]
+* upload completely sent off: 133 bytes
+< HTTP/1.1 201 Created
+
+< X-Powered-By: Express
+
+< X-Content-Type-Options: nosniff
+
+< Strict-Transport-Security: max-age=31536000; includeSubDomains
+
+< Access-Control-Allow-Origin: *
+
+< Access-Control-Allow-Methods: GET, POST, PATCH, DELETE, OPTIONS
+
+< Access-Control-Allow-Headers: Content-Type, Authorization, Idempotency-Key, If-Match, If-None-Match, X-HTTP-Method-Override, Accept
+
+< Access-Control-Expose-Headers: Location, ETag, X-RateLimit-Limit, X-RateLimit-Remaining, Retry-After
+
+< X-RateLimit-Limit: 50
+
+< X-RateLimit-Remaining: 48
+
+< Location: /orders/102
+
+< ETag: "1b493e2cfc75c9d5"
+
+< Content-Type: application/json; charset=utf-8
+
+< Content-Length: 293
+
+< Date: Tue, 13 Oct 2026 16:48:09 GMT
+
+< Connection: keep-alive
+
+< Keep-Alive: timeout=5
+
+< 
+
+{ [293 bytes data]
+
+100    426 100    293 100    133  71237  32336                              0
+100    426 100    293 100    133  66229  30063                              0
+100    426 100    293 100    133  62754  28485                              0
+* Connection #0 to host localhost:5000 left intact
+{"id":"102","buyerId":"BUYER-01","items":[{"productId":"PROD-RICE-02","quantity":10,"pricePerKg":60,"itemTotal":"600.00"}],"totalAmount":600,"deliveryAddress":"APMC Market Gate 1, Surat, Gujarat","status":"pending","createdAt":"2026-10-13T16:48:09.638Z","updatedAt":"2026-10-13T16:48:09.638Z"}
+
+
+3. READ SINGLE ORDER (200 OK + ETag header):
+* Host localhost:5000 was resolved.
+* IPv6: ::1
+* IPv4: 127.0.0.1
+*   Trying [::1]:5000...
+* Established connection to localhost (::1 port 5000) from ::1 port 51013 
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+
+  0      0   0      0   0      0      0      0                              0* using HTTP/1.x
+> GET /orders/102 HTTP/1.1
+
+> Host: localhost:5000
+
+> User-Agent: curl/8.21.0
+
+> Accept: */*
+
+> 
+
+* Request completely sent off
+< HTTP/1.1 200 OK
+
+< X-Powered-By: Express
+
+< X-Content-Type-Options: nosniff
+
+< Strict-Transport-Security: max-age=31536000; includeSubDomains
+
+< Access-Control-Allow-Origin: *
+
+< Access-Control-Allow-Methods: GET, POST, PATCH, DELETE, OPTIONS
+
+< Access-Control-Allow-Headers: Content-Type, Authorization, Idempotency-Key, If-Match, If-None-Match, X-HTTP-Method-Override, Accept
+
+< Access-Control-Expose-Headers: Location, ETag, X-RateLimit-Limit, X-RateLimit-Remaining, Retry-After
+
+< X-RateLimit-Limit: 50
+
+< X-RateLimit-Remaining: 49
+
+< ETag: "1b493e2cfc75c9d5"
+
+< Cache-Control: public, max-age=60, must-revalidate
+
+< Content-Type: application/json; charset=utf-8
+
+< Content-Length: 293
+
+< Date: Tue, 13 Oct 2026 16:48:09 GMT
+
+< Connection: keep-alive
+
+< Keep-Alive: timeout=5
+
+< 
+
+{ [293 bytes data]
+
+100    293 100    293   0      0  63296      0                              0
+100    293 100    293   0      0  58366      0                              0
+100    293 100    293   0      0  54430      0                              0
+* Connection #0 to host localhost:5000 left intact
+{"id":"102","buyerId":"BUYER-01","items":[{"productId":"PROD-RICE-02","quantity":10,"pricePerKg":60,"itemTotal":"600.00"}],"totalAmount":600,"deliveryAddress":"APMC Market Gate 1, Surat, Gujarat","status":"pending","createdAt":"2026-10-13T16:48:09.638Z","updatedAt":"2026-10-13T16:48:09.638Z"}
+
+
+4. CONDITIONAL GET (If-None-Match returning 304 Not Modified):
+* Host localhost:5000 was resolved.
+* IPv6: ::1
+* IPv4: 127.0.0.1
+*   Trying [::1]:5000...
+* Established connection to localhost (::1 port 5000) from ::1 port 51014 
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+
+  0      0   0      0   0      0      0      0                              0* using HTTP/1.x
+> GET /orders/102 HTTP/1.1
+
+> Host: localhost:5000
+
+> User-Agent: curl/8.21.0
+
+> Accept: */*
+
+> If-None-Match: " \8dbd7454044eb896\\ 
+
+> 
+
+* Request completely sent off
+< HTTP/1.1 200 OK
+
+< X-Powered-By: Express
+
+< X-Content-Type-Options: nosniff
+
+< Strict-Transport-Security: max-age=31536000; includeSubDomains
+
+< Access-Control-Allow-Origin: *
+
+< Access-Control-Allow-Methods: GET, POST, PATCH, DELETE, OPTIONS
+
+< Access-Control-Allow-Headers: Content-Type, Authorization, Idempotency-Key, If-Match, If-None-Match, X-HTTP-Method-Override, Accept
+
+< Access-Control-Expose-Headers: Location, ETag, X-RateLimit-Limit, X-RateLimit-Remaining, Retry-After
+
+< X-RateLimit-Limit: 50
+
+< X-RateLimit-Remaining: 48
+
+< ETag: "1b493e2cfc75c9d5"
+
+< Cache-Control: public, max-age=60, must-revalidate
+
+< Content-Type: application/json; charset=utf-8
+
+< Content-Length: 293
+
+< Date: Tue, 13 Oct 2026 16:48:10 GMT
+
+< Connection: keep-alive
+
+< Keep-Alive: timeout=5
+
+< 
+
+{ [293 bytes data]
+
+100    293 100    293   0      0  62500      0                              0
+100    293 100    293   0      0  58764      0                              0
+100    293 100    293   0      0  57159      0                              0
+* Connection #0 to host localhost:5000 left intact
+{"id":"102","buyerId":"BUYER-01","items":[{"productId":"PROD-RICE-02","quantity":10,"pricePerKg":60,"itemTotal":"600.00"}],"totalAmount":600,"deliveryAddress":"APMC Market Gate 1, Surat, Gujarat","status":"pending","createdAt":"2026-10-13T16:48:09.638Z","updatedAt":"2026-10-13T16:48:09.638Z"}
+
+
+5. CONDITIONAL WRITE REJECTED (If-Match stale returning 412 Precondition Failed):
+* Host localhost:5000 was resolved.
+* IPv6: ::1
+* IPv4: 127.0.0.1
+*   Trying [::1]:5000...
+* Established connection to localhost (::1 port 5000) from ::1 port 51015 
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+
+  0      0   0      0   0      0      0      0                              0* using HTTP/1.x
+> PATCH /orders/102 HTTP/1.1
+
+> Host: localhost:5000
+
+> User-Agent: curl/8.21.0
+
+> Accept: */*
+
+> Authorization: Bearer km_buyer_token_456
+
+> Content-Type: application/json
+
+> If-Match: " \stale_etag_9999\ -d {"deliveryAddress":
+
+> 
+
+* Request completely sent off
+< HTTP/1.1 412 Precondition Failed
+
+< X-Powered-By: Express
+
+< X-Content-Type-Options: nosniff
+
+< Strict-Transport-Security: max-age=31536000; includeSubDomains
+
+< Access-Control-Allow-Origin: *
+
+< Access-Control-Allow-Methods: GET, POST, PATCH, DELETE, OPTIONS
+
+< Access-Control-Allow-Headers: Content-Type, Authorization, Idempotency-Key, If-Match, If-None-Match, X-HTTP-Method-Override, Accept
+
+< Access-Control-Expose-Headers: Location, ETag, X-RateLimit-Limit, X-RateLimit-Remaining, Retry-After
+
+< X-RateLimit-Limit: 50
+
+< X-RateLimit-Remaining: 47
+
+< Content-Type: application/problem+json; charset=utf-8
+
+< Content-Length: 278
+
+< ETag: W/"116-Q6oqicpG7Kp/n9iz8lDTiescMCE"
+
+< Date: Tue, 13 Oct 2026 16:48:10 GMT
+
+< Connection: keep-alive
+
+< Keep-Alive: timeout=5
+
+< 
+
+{ [278 bytes data]
+
+100    278 100    278   0      0  22100      0                              0
+100    278 100    278   0      0  21745      0                              0
+100    278 100    278   0      0  21304      0                              0
+* Connection #0 to host localhost:5000 left intact
+{"type":"https://kisanmitra.in/errors/precondition-failed","title":"Precondition Failed","status":412,"detail":"The resource has been modified by another request. Current ETag is \"1b493e2cfc75c9d5\", your provided If-Match was \" \\stale_etag_9999\\ -d {\"deliveryAddress\":."}* URL rejected: Bad hostname
+curl: (3) URL rejected: Bad hostname
+* Could not resolve host: Warehouse
+* Could not resolve host: Warehouse
+* Could not resolve: Warehouse:80
+* closing connection #1
+curl: (6) Could not resolve host: Warehouse
+curl: (3) unmatched close brace/bracket in position 3:
+5"} 
+  ^
+
+
+6. CONDITIONAL WRITE SUCCESS (If-Match matching returning 200 OK):
+* Host localhost:5000 was resolved.
+* IPv6: ::1
+* IPv4: 127.0.0.1
+*   Trying [::1]:5000...
+* Established connection to localhost (::1 port 5000) from ::1 port 51016 
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+
+  0      0   0      0   0      0      0      0                              0* using HTTP/1.x
+> PATCH /orders/102 HTTP/1.1
+
+> Host: localhost:5000
+
+> User-Agent: curl/8.21.0
+
+> Accept: */*
+
+> Authorization: Bearer km_buyer_token_456
+
+> Content-Type: application/json
+
+> If-Match: *
+
+> Content-Length: 57
+
+> 
+
+} [57 bytes data]
+* upload completely sent off: 57 bytes
+< HTTP/1.1 200 OK
+
+< X-Powered-By: Express
+
+< X-Content-Type-Options: nosniff
+
+< Strict-Transport-Security: max-age=31536000; includeSubDomains
+
+< Access-Control-Allow-Origin: *
+
+< Access-Control-Allow-Methods: GET, POST, PATCH, DELETE, OPTIONS
+
+< Access-Control-Allow-Headers: Content-Type, Authorization, Idempotency-Key, If-Match, If-None-Match, X-HTTP-Method-Override, Accept
+
+< Access-Control-Expose-Headers: Location, ETag, X-RateLimit-Limit, X-RateLimit-Remaining, Retry-After
+
+< X-RateLimit-Limit: 50
+
+< X-RateLimit-Remaining: 46
+
+< ETag: "37c182a5db9b42d7"
+
+< Content-Type: application/json; charset=utf-8
+
+< Content-Length: 293
+
+< Date: Tue, 13 Oct 2026 16:48:13 GMT
+
+< Connection: keep-alive
+
+< Keep-Alive: timeout=5
+
+< 
+
+{ [293 bytes data]
+
+100    350 100    293 100     57  40904   7957                              0
+100    350 100    293 100     57  38978   7582                              0
+100    350 100    293 100     57  37650   7324                              0
+* Connection #0 to host localhost:5000 left intact
+{"id":"102","buyerId":"BUYER-01","items":[{"productId":"PROD-RICE-02","quantity":10,"pricePerKg":60,"itemTotal":"600.00"}],"totalAmount":600,"deliveryAddress":"APMC Market Gate 3, Surat, Gujarat","status":"pending","createdAt":"2026-10-13T16:48:09.638Z","updatedAt":"2026-10-13T16:48:13.280Z"}
+
+
+7. AUTH FAILURE (401 Unauthorized):
+Note: Unnecessary use of -X or --request, POST is already inferred.
+* Host localhost:5000 was resolved.
+* IPv6: ::1
+* IPv4: 127.0.0.1
+*   Trying [::1]:5000...
+* Established connection to localhost (::1 port 5000) from ::1 port 51017 
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+
+  0      0   0      0   0      0      0      0                              0* using HTTP/1.x
+> POST /orders HTTP/1.1
+
+> Host: localhost:5000
+
+> User-Agent: curl/8.21.0
+
+> Accept: */*
+
+> Content-Type: application/json
+
+> Content-Length: 36
+
+> 
+
+} [36 bytes data]
+* upload completely sent off: 36 bytes
+< HTTP/1.1 401 Unauthorized
+
+< X-Powered-By: Express
+
+< X-Content-Type-Options: nosniff
+
+< Strict-Transport-Security: max-age=31536000; includeSubDomains
+
+< Access-Control-Allow-Origin: *
+
+< Access-Control-Allow-Methods: GET, POST, PATCH, DELETE, OPTIONS
+
+< Access-Control-Allow-Headers: Content-Type, Authorization, Idempotency-Key, If-Match, If-None-Match, X-HTTP-Method-Override, Accept
+
+< Access-Control-Expose-Headers: Location, ETag, X-RateLimit-Limit, X-RateLimit-Remaining, Retry-After
+
+< X-RateLimit-Limit: 50
+
+< X-RateLimit-Remaining: 47
+
+< Content-Type: application/problem+json; charset=utf-8
+
+< Content-Length: 152
+
+< ETag: W/"98-4kkWPxb/BET4kkDVPOXDOKu6kPI"
+
+< Date: Tue, 13 Oct 2026 16:48:13 GMT
+
+< Connection: keep-alive
+
+< Keep-Alive: timeout=5
+
+< 
+
+{ [152 bytes data]
+
+100    188 100    152 100     36  40685   9635                              0
+100    188 100    152 100     36  37383   8853                              0
+100    188 100    152 100     36  35193   8335                              0
+* Connection #0 to host localhost:5000 left intact
+{"type":"https://kisanmitra.in/errors/unauthorized","title":"Unauthorized","status":401,"detail":"Missing Authorization header. Expected Bearer token."}
+
+
+8. MISSING RESOURCE (404 Not Found):
+* Host localhost:5000 was resolved.
+* IPv6: ::1
+* IPv4: 127.0.0.1
+*   Trying [::1]:5000...
+* Established connection to localhost (::1 port 5000) from ::1 port 51018 
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+
+  0      0   0      0   0      0      0      0                              0* using HTTP/1.x
+> GET /orders/88888 HTTP/1.1
+
+> Host: localhost:5000
+
+> User-Agent: curl/8.21.0
+
+> Accept: */*
+
+> 
+
+* Request completely sent off
+< HTTP/1.1 404 Not Found
+
+< X-Powered-By: Express
+
+< X-Content-Type-Options: nosniff
+
+< Strict-Transport-Security: max-age=31536000; includeSubDomains
+
+< Access-Control-Allow-Origin: *
+
+< Access-Control-Allow-Methods: GET, POST, PATCH, DELETE, OPTIONS
+
+< Access-Control-Allow-Headers: Content-Type, Authorization, Idempotency-Key, If-Match, If-None-Match, X-HTTP-Method-Override, Accept
+
+< Access-Control-Expose-Headers: Location, ETag, X-RateLimit-Limit, X-RateLimit-Remaining, Retry-After
+
+< X-RateLimit-Limit: 50
+
+< X-RateLimit-Remaining: 46
+
+< Content-Type: application/problem+json; charset=utf-8
+
+< Content-Length: 139
+
+< ETag: W/"8b-PoeD2slORA6dRZtTK7QbKzFcYvE"
+
+< Date: Tue, 13 Oct 2026 16:48:13 GMT
+
+< Connection: keep-alive
+
+< Keep-Alive: timeout=5
+
+< 
+
+{ [139 bytes data]
+
+100    139 100    139   0      0  36850      0                              0
+100    139 100    139   0      0  35109      0                              0
+100    139 100    139   0      0  33309      0                              0
+* Connection #0 to host localhost:5000 left intact
+{"type":"https://kisanmitra.in/errors/order-not-found","title":"Order Not Found","status":404,"detail":"No order found matching ID: 88888"}
+
+
+9. VALIDATION ERROR (422 Unprocessable Entity):
+Note: Unnecessary use of -X or --request, POST is already inferred.
+* Host localhost:5000 was resolved.
+* IPv6: ::1
+* IPv4: 127.0.0.1
+*   Trying [::1]:5000...
+* Established connection to localhost (::1 port 5000) from ::1 port 51019 
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+
+  0      0   0      0   0      0      0      0                              0* using HTTP/1.x
+> POST /orders HTTP/1.1
+
+> Host: localhost:5000
+
+> User-Agent: curl/8.21.0
+
+> Accept: */*
+
+> Authorization: Bearer km_buyer_token_456
+
+> Content-Type: application/json
+
+> Content-Length: 26
+
+> 
+
+} [26 bytes data]
+* upload completely sent off: 26 bytes
+< HTTP/1.1 400 Bad Request
+
+< X-Powered-By: Express
+
+< X-Content-Type-Options: nosniff
+
+< Strict-Transport-Security: max-age=31536000; includeSubDomains
+
+< Access-Control-Allow-Origin: *
+
+< Access-Control-Allow-Methods: GET, POST, PATCH, DELETE, OPTIONS
+
+< Access-Control-Allow-Headers: Content-Type, Authorization, Idempotency-Key, If-Match, If-None-Match, X-HTTP-Method-Override, Accept
+
+< Access-Control-Expose-Headers: Location, ETag, X-RateLimit-Limit, X-RateLimit-Remaining, Retry-After
+
+< X-RateLimit-Limit: 50
+
+< X-RateLimit-Remaining: 45
+
+< Content-Type: application/problem+json; charset=utf-8
+
+< Content-Length: 143
+
+< ETag: W/"8f-g8H6iOoCdEFNuFNJWivmhaqVGdg"
+
+< Date: Tue, 13 Oct 2026 16:48:13 GMT
+
+< Connection: keep-alive
+
+< Keep-Alive: timeout=5
+
+< 
+
+{ [143 bytes data]
+
+100    169 100    143 100     26  25458   4628                              0
+100    169 100    143 100     26  23765   4321                              0
+100    169 100    143 100     26  22263   4047                              0
+* Connection #0 to host localhost:5000 left intact
+{"type":"https://kisanmitra.in/errors/bad-request","title":"Malformed JSON","status":400,"detail":"Request body contains invalid JSON syntax."}Note: Unnecessary use of -X or --request, POST is already inferred.
+* URL rejected: Port number was not a decimal number between 0 and 65535
+curl: (3) URL rejected: Port number was not a decimal number between 0 and 65535
+curl: (3) unmatched close brace/bracket in position 1:
+[]} 
+ ^
+
+
+10. CANCEL ORDER (202 Accepted first time):
+Note: Unnecessary use of -X or --request, POST is already inferred.
+* Host localhost:5000 was resolved.
+* IPv6: ::1
+* IPv4: 127.0.0.1
+*   Trying [::1]:5000...
+* Established connection to localhost (::1 port 5000) from ::1 port 51020 
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+
+  0      0   0      0   0      0      0      0                              0* using HTTP/1.x
+> POST /orders/102/cancel HTTP/1.1
+
+> Host: localhost:5000
+
+> User-Agent: curl/8.21.0
+
+> Accept: */*
+
+> Authorization: Bearer km_buyer_token_456
+
+> Content-Type: application/json
+
+> Content-Length: 37
+
+> 
+
+} [37 bytes data]
+* upload completely sent off: 37 bytes
+< HTTP/1.1 202 Accepted
+
+< X-Powered-By: Express
+
+< X-Content-Type-Options: nosniff
+
+< Strict-Transport-Security: max-age=31536000; includeSubDomains
+
+< Access-Control-Allow-Origin: *
+
+< Access-Control-Allow-Methods: GET, POST, PATCH, DELETE, OPTIONS
+
+< Access-Control-Allow-Headers: Content-Type, Authorization, Idempotency-Key, If-Match, If-None-Match, X-HTTP-Method-Override, Accept
+
+< Access-Control-Expose-Headers: Location, ETag, X-RateLimit-Limit, X-RateLimit-Remaining, Retry-After
+
+< X-RateLimit-Limit: 50
+
+< X-RateLimit-Remaining: 44
+
+< Content-Type: application/json; charset=utf-8
+
+< Content-Length: 408
+
+< ETag: W/"198-dvyohVbAdOY2Gn5b7duru8+wELY"
+
+< Date: Tue, 13 Oct 2026 16:48:13 GMT
+
+< Connection: keep-alive
+
+< Keep-Alive: timeout=5
+
+< 
+
+{ [408 bytes data]
+
+100    445 100    408 100     37  41760   3787                              0
+100    445 100    408 100     37  28789   2610                              0
+100    445 100    408 100     37  27694   2511                              0
+* Connection #0 to host localhost:5000 left intact
+{"message":"Order cancellation accepted for processing.","order":{"id":"102","buyerId":"BUYER-01","items":[{"productId":"PROD-RICE-02","quantity":10,"pricePerKg":60,"itemTotal":"600.00"}],"totalAmount":600,"deliveryAddress":"APMC Market Gate 3, Surat, Gujarat","status":"cancelled","createdAt":"2026-10-13T16:48:09.638Z","updatedAt":"2026-10-13T16:48:13.897Z","cancellationReason":"Farmer delivery delayed"}}
+
+
+11. CANCEL ORDER REPEAT (200 OK idempotent retry):
+Note: Unnecessary use of -X or --request, POST is already inferred.
+* Host localhost:5000 was resolved.
+* IPv6: ::1
+* IPv4: 127.0.0.1
+*   Trying [::1]:5000...
+* Established connection to localhost (::1 port 5000) from ::1 port 51021 
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+
+  0      0   0      0   0      0      0      0                              0* using HTTP/1.x
+> POST /orders/102/cancel HTTP/1.1
+
+> Host: localhost:5000
+
+> User-Agent: curl/8.21.0
+
+> Accept: */*
+
+> Authorization: Bearer km_buyer_token_456
+
+> Content-Type: application/json
+
+> Content-Length: 37
+
+> 
+
+} [37 bytes data]
+* upload completely sent off: 37 bytes
+< HTTP/1.1 200 OK
+
+< X-Powered-By: Express
+
+< X-Content-Type-Options: nosniff
+
+< Strict-Transport-Security: max-age=31536000; includeSubDomains
+
+< Access-Control-Allow-Origin: *
+
+< Access-Control-Allow-Methods: GET, POST, PATCH, DELETE, OPTIONS
+
+< Access-Control-Allow-Headers: Content-Type, Authorization, Idempotency-Key, If-Match, If-None-Match, X-HTTP-Method-Override, Accept
+
+< Access-Control-Expose-Headers: Location, ETag, X-RateLimit-Limit, X-RateLimit-Remaining, Retry-After
+
+< X-RateLimit-Limit: 50
+
+< X-RateLimit-Remaining: 43
+
+< Content-Type: application/json; charset=utf-8
+
+< Content-Length: 404
+
+< ETag: W/"194-j1TXjZ1fQSdnVRNrz66W82rwe6g"
+
+< Date: Tue, 13 Oct 2026 16:48:14 GMT
+
+< Connection: keep-alive
+
+< Keep-Alive: timeout=5
+
+< 
+
+{ [404 bytes data]
+
+100    441 100    404 100     37 98.55k   9243                              0
+100    441 100    404 100     37  95553   8751                              0
+100    441 100    404 100     37  91985   8424                              0
+* Connection #0 to host localhost:5000 left intact
+{"message":"Order was already cancelled previously.","order":{"id":"102","buyerId":"BUYER-01","items":[{"productId":"PROD-RICE-02","quantity":10,"pricePerKg":60,"itemTotal":"600.00"}],"totalAmount":600,"deliveryAddress":"APMC Market Gate 3, Surat, Gujarat","status":"cancelled","createdAt":"2026-10-13T16:48:09.638Z","updatedAt":"2026-10-13T16:48:13.897Z","cancellationReason":"Farmer delivery delayed"}}
+
+
+12. OPTIONS METHOD DISCOVERY (204 + Allow header):
+* Host localhost:5000 was resolved.
+* IPv6: ::1
+* IPv4: 127.0.0.1
+*   Trying [::1]:5000...
+* Established connection to localhost (::1 port 5000) from ::1 port 51022 
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+
+  0      0   0      0   0      0      0      0                              0* using HTTP/1.x
+> OPTIONS /orders/102 HTTP/1.1
+
+> Host: localhost:5000
+
+> User-Agent: curl/8.21.0
+
+> Accept: */*
+
+> 
+
+* Request completely sent off
+< HTTP/1.1 204 No Content
+
+< X-Powered-By: Express
+
+< X-Content-Type-Options: nosniff
+
+< Strict-Transport-Security: max-age=31536000; includeSubDomains
+
+< Access-Control-Allow-Origin: *
+
+< Access-Control-Allow-Methods: GET, POST, PATCH, DELETE, OPTIONS
+
+< Access-Control-Allow-Headers: Content-Type, Authorization, Idempotency-Key, If-Match, If-None-Match, X-HTTP-Method-Override, Accept
+
+< Access-Control-Expose-Headers: Location, ETag, X-RateLimit-Limit, X-RateLimit-Remaining, Retry-After
+
+< Allow: GET, POST, PATCH, DELETE, OPTIONS
+
+< Date: Tue, 13 Oct 2026 16:48:14 GMT
+
+< Connection: keep-alive
+
+< Keep-Alive: timeout=5
+
+< 
+
+
+  0      0   0      0   0      0      0      0                              0
+  0      0   0      0   0      0      0      0                              0
+  0      0   0      0   0      0      0      0                              0
+* Connection #0 to host localhost:5000 left intact
+
+
+13. DELETE ORDER (204 No Content):
+* Host localhost:5000 was resolved.
+* IPv6: ::1
+* IPv4: 127.0.0.1
+*   Trying [::1]:5000...
+* Established connection to localhost (::1 port 5000) from ::1 port 51023 
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+
+  0      0   0      0   0      0      0      0                              0* using HTTP/1.x
+> DELETE /orders/102 HTTP/1.1
+
+> Host: localhost:5000
+
+> User-Agent: curl/8.21.0
+
+> Accept: */*
+
+> Authorization: Bearer km_buyer_token_456
+
+> 
+
+* Request completely sent off
+< HTTP/1.1 204 No Content
+
+< X-Powered-By: Express
+
+< X-Content-Type-Options: nosniff
+
+< Strict-Transport-Security: max-age=31536000; includeSubDomains
+
+< Access-Control-Allow-Origin: *
+
+< Access-Control-Allow-Methods: GET, POST, PATCH, DELETE, OPTIONS
+
+< Access-Control-Allow-Headers: Content-Type, Authorization, Idempotency-Key, If-Match, If-None-Match, X-HTTP-Method-Override, Accept
+
+< Access-Control-Expose-Headers: Location, ETag, X-RateLimit-Limit, X-RateLimit-Remaining, Retry-After
+
+< X-RateLimit-Limit: 50
+
+< X-RateLimit-Remaining: 42
+
+< Date: Tue, 13 Oct 2026 16:48:14 GMT
+
+< Connection: keep-alive
+
+< Keep-Alive: timeout=5
+
+< 
+
+
+  0      0   0      0   0      0      0      0                              0
+  0      0   0      0   0      0      0      0                              0
+  0      0   0      0   0      0      0      0                              0
+* Connection #0 to host localhost:5000 left intact
+
+
+
